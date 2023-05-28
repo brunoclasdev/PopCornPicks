@@ -17,24 +17,24 @@ internal data class MovieModel(
 
     var originalLanguage: String? = null,
 
-    var originalTitle : String? = null,
+    var originalTitle: String? = null,
 
-    var description : String? = null,
+    var description: String? = null,
 
-    var popularity : Float? = 0.0f,
+    var popularity: Float? = 0.0f,
 
-    var posterPath : String? = "",
+    var posterPath: String? = "",
 
-    var releaseDate : String? = "",
+    var releaseDate: String? = "",
 
-    var title : String? = "",
+    var title: String? = "",
 
-    var video : Boolean? = false,
+    var video: Boolean? = false,
 
-    var voteAverage : Float? = 0.0f,
+    var voteAverage: Float? = 0.0f,
 
-    var voteCount : Long? = 0,
-): Parcelable
+    var voteCount: Long? = 0,
+) : Parcelable
 
 internal fun MovieEntity.toModel(): MovieModel {
     return MovieModel(
