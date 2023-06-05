@@ -1,6 +1,7 @@
 package br.com.bclas.popcornpicks.presentation.view.activities
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import br.com.bclas.popcornpicks.databinding.ActivityHomeBinding
@@ -31,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.lifecycleOwner = this
         binding.viewModel = homeViewModel
-
+        setupStateFlowObserver()
     }
 
     private fun setupStateFlowObserver(){
@@ -39,13 +40,14 @@ class HomeActivity : AppCompatActivity() {
             homeViewModel.uiState.collect{
                 when(it){
                     is UiState.Success -> {
-                        //TODO
+                        binding.textView.text = "Paginas: ${it.data.page}"
+                        it.data.page
                     }
                     is UiState.Loading -> {
-                        //TODO
+                        Toast.makeText(this@HomeActivity, "Carregando", Toast.LENGTH_SHORT).show()
                     }
                     is UiState.Error -> {
-                        //TODO
+                        Toast.makeText(this@HomeActivity, "Error", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

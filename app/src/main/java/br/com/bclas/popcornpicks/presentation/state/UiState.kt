@@ -4,6 +4,6 @@ import br.com.bclas.popcornpicks.presentation.model.ListMovieModel
 
 internal sealed class UiState {
     internal object Loading : UiState()
-    internal data class Success(val data: ListMovieModel) : UiState()
+    internal data class Success constructor(val data: ListMovieModel) : UiState()
     internal object Error : UiState()
 }
