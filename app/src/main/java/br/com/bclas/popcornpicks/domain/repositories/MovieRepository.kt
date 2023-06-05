@@ -1,4 +1,4 @@
-package br.com.bclas.popcornpicks.domain.repository
+package br.com.bclas.popcornpicks.domain.repositories
 
 import br.com.bclas.popcornpicks.domain.entity.ListMovieEntity
 import br.com.bclas.popcornpicks.domain.util.Result

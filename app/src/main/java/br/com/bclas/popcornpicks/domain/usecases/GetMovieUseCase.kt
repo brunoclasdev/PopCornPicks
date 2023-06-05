@@ -1,9 +1,9 @@
-package br.com.bclas.popcornpicks.domain.usecase
+package br.com.bclas.popcornpicks.domain.usecases
 
 import br.com.bclas.popcornpicks.domain.entity.ListMovieEntity
 import br.com.bclas.popcornpicks.domain.util.Result
 import kotlinx.coroutines.flow.Flow
-import br.com.bclas.popcornpicks.domain.repository.MovieRepository
+import br.com.bclas.popcornpicks.domain.repositories.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
