@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.bclas.popcornpicks.databinding.ActivityHomeBinding
 import br.com.bclas.popcornpicks.presentation.util.ext.getScope
 import org.koin.core.scope.Scope
 import br.com.bclas.popcornpicks.framework.di.NAMED_MOVIE_hOME
+import br.com.bclas.popcornpicks.presentation.adapter.ListMoviesAdapter
+import br.com.bclas.popcornpicks.presentation.model.ListMovieModel
 import br.com.bclas.popcornpicks.presentation.state.UiState
 import br.com.bclas.popcornpicks.presentation.util.ext.byViewModel
 import br.com.bclas.popcornpicks.presentation.viewmodel.PopCornPicksListViewModel
@@ -41,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
                 when(it){
                     is UiState.Success -> {
                         binding.textView.text = "Paginas: ${it.data.page}"
-                        it.data.page
+                        fillListMoviesNowPlaying(it.data)
                     }
                     is UiState.Loading -> {
                         Toast.makeText(this@HomeActivity, "Carregando", Toast.LENGTH_SHORT).show()
@@ -52,6 +55,13 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun fillListMoviesNowPlaying(data: ListMovieModel) {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.listMoviesNowPlaying.layoutManager = layoutManager
+        val adapter = ListMoviesAdapter(data)
+        binding.listMoviesNowPlaying.adapter = adapter
     }
 
 

@@ -6,7 +6,7 @@ import br.com.bclas.popcornpicks.domain.entity.MovieEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-internal data class ListMovieModel(
+data class ListMovieModel(
     var page: Int? = 0,
     var results: List<MovieModel> = listOf(),
     var totalPage: Int? = 0,

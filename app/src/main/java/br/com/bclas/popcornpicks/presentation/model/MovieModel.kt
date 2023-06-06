@@ -5,7 +5,7 @@ import br.com.bclas.popcornpicks.domain.entity.MovieEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-internal data class MovieModel(
+data class MovieModel(
 
     var adult: Boolean? = false,
 
