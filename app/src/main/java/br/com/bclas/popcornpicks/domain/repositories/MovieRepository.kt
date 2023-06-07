@@ -4,6 +4,6 @@ import br.com.bclas.popcornpicks.domain.entity.ListMovieEntity
 import br.com.bclas.popcornpicks.domain.util.Result
 
 internal interface MovieRepository {
-    suspend fun getMovies(): Result<ListMovieEntity, Unit>
+    suspend fun getMovies(type: String): Result<ListMovieEntity, Unit>
 
 }

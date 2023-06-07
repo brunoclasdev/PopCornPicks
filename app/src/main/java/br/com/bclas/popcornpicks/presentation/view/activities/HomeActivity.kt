@@ -18,15 +18,15 @@ import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
 
-    private val binding : ActivityHomeBinding by lazy {
+    private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
     }
 
-    private val scope : Scope by lazy {
+    private val scope: Scope by lazy {
         getScope(NAMED_MOVIE_hOME)
     }
 
-    private val homeViewModel : PopCornPicksListViewModel by scope.byViewModel(this)
+    private val homeViewModel: PopCornPicksListViewModel by scope.byViewModel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,23 +38,45 @@ class HomeActivity : AppCompatActivity() {
         setupStateFlowObserver()
     }
 
-    private fun setupStateFlowObserver(){
-        lifecycleScope.launch{
-            homeViewModel.uiState.collect{
-                when(it){
+    private fun setupStateFlowObserver() {
+        lifecycleScope.launch {
+            homeViewModel.uiState.collect {
+                when (it) {
                     is UiState.Success -> {
-                        binding.textView.text = "Paginas: ${it.data.page}"
+                        binding.lblNowPlaying.text = "Agora nos cinemas!"
                         fillListMoviesNowPlaying(it.data)
                     }
+
                     is UiState.Loading -> {
                         Toast.makeText(this@HomeActivity, "Carregando", Toast.LENGTH_SHORT).show()
                     }
+
                     is UiState.Error -> {
                         Toast.makeText(this@HomeActivity, "Error", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
+        lifecycleScope.launch {
+            homeViewModel.uiStatePopular.collect {
+                when (it) {
+                    is UiState.Success -> {
+                        binding.lblPopular.text = "Mais assistidos!"
+                        fillListMoviesPopular(it.data)
+                    }
+
+                    is UiState.Loading -> {
+                        Toast.makeText(this@HomeActivity, "Carregando", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is UiState.Error -> {
+                        Toast.makeText(this@HomeActivity, "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+        }
+
     }
 
     private fun fillListMoviesNowPlaying(data: ListMovieModel) {
@@ -62,6 +84,13 @@ class HomeActivity : AppCompatActivity() {
         binding.listMoviesNowPlaying.layoutManager = layoutManager
         val adapter = ListMoviesAdapter(data)
         binding.listMoviesNowPlaying.adapter = adapter
+    }
+
+    private fun fillListMoviesPopular(data: ListMovieModel) {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.listMoviesPopular.layoutManager = layoutManager
+        val adapter = ListMoviesAdapter(data)
+        binding.listMoviesPopular.adapter = adapter
     }
 
 

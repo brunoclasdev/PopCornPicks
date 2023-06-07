@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 internal interface GetMovieUseCase {
-    operator fun invoke(): Flow<Result<ListMovieEntity, Unit>>
+    operator fun invoke(type : String): Flow<Result<ListMovieEntity, Unit>>
 }
 internal class GetMovieUseCaseImpl(
     private val movieRepository: MovieRepository,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : GetMovieUseCase {
-    override fun invoke(): Flow<Result<ListMovieEntity, Unit>> {
+    override fun invoke(type: String): Flow<Result<ListMovieEntity, Unit>> {
         return flow{
-            emit(movieRepository.getMovies())
+            emit(movieRepository.getMovies(type))
         }.flowOn(coroutineDispatcher)
     }
 }

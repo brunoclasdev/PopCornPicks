@@ -15,7 +15,7 @@ internal class MovieDataSourceImpl(
         .baseUrl(BASE_URL)
         .create(MovieService::class.java)}
 
-    override suspend fun getMovies(url: String): Response<ListMovieModel> {
-        return movieService.listMovie()
+    override suspend fun getMovies(type: String): Response<ListMovieModel> {
+        return movieService.listMovie(type)
     }
 }

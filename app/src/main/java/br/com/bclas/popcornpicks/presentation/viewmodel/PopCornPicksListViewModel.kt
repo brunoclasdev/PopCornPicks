@@ -15,14 +15,32 @@ import br.com.bclas.popcornpicks.presentation.model.toModel
 
 internal class PopCornPicksListViewModel(private val getMovieUseCase: GetMovieUseCase) : ViewModel() {
 
-    val uiState : StateFlow<UiState> = getMovieFlow().stateIn(
+    val uiState : StateFlow<UiState> = getMovieFlow("now_playing").stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = UiState.Loading
     )
 
-    private fun getMovieFlow(): Flow<UiState> {
-        return getMovieUseCase().map {
+    private fun getMovieFlow(type: String): Flow<UiState> {
+        return getMovieUseCase(type).map {
+            when (it) {
+                is Result.Success -> UiState.Success(it.value.toModel())
+                is Result.Loading -> UiState.Loading
+                else ->{UiState.Error}
+            }
+        }.catch {
+            emit(UiState.Error)
+        }
+    }
+
+    val uiStatePopular : StateFlow<UiState> = getMoviePopularFlow("popular").stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = UiState.Loading
+    )
+
+    private fun getMoviePopularFlow(type: String): Flow<UiState> {
+        return getMovieUseCase(type).map {
             when (it) {
                 is Result.Success -> UiState.Success(it.value.toModel())
                 is Result.Loading -> UiState.Loading

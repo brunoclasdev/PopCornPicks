@@ -12,9 +12,9 @@ import retrofit2.Response
 internal class MovieRepositoryImpl constructor(
     private val movieDataSource: MovieDataSource
 ): MovieRepository {
-    override suspend fun getMovies() : Result<ListMovieEntity, Unit> {
+    override suspend fun getMovies(type: String) : Result<ListMovieEntity, Unit> {
         return try{
-            val response : Response<ListMovieModel> = movieDataSource.getMovies(BASE_URL)
+            val response : Response<ListMovieModel> = movieDataSource.getMovies(type)
             if(response.isSuccessful) {
                 val listMovieModel = response.body() ?: return Result.Failure()
                 Result.Success(listMovieModel.toEntity())
