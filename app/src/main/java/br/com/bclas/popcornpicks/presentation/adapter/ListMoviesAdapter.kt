@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bclas.popcornpicks.databinding.ItemListMovieBinding
 import br.com.bclas.popcornpicks.framework.util.BASE_URL_IMG
+import br.com.bclas.popcornpicks.presentation.events.OnItemClickListener
 import br.com.bclas.popcornpicks.presentation.model.ListMovieModel
 import coil.load
 import coil.transform.RoundedCornersTransformation
 
-class ListMoviesAdapter(private val listMovieModel : ListMovieModel) : RecyclerView.Adapter<ListMoviesAdapter.ListMovieViewHolder>() {
+class ListMoviesAdapter(private val listMovieModel : ListMovieModel, private val listener: OnItemClickListener? = null) : RecyclerView.Adapter<ListMoviesAdapter.ListMovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListMovieViewHolder {
         val binding = ItemListMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -45,6 +46,11 @@ class ListMoviesAdapter(private val listMovieModel : ListMovieModel) : RecyclerV
                         lottieAnimationMovieView.visibility = View.GONE
                     }
                 )
+            }
+            imageMovie.setOnClickListener {
+                listener?.let {
+                    it.onItemClick(currentItem)
+                }
             }
         }
     }

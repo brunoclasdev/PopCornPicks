@@ -2,15 +2,31 @@
     <!-- Base application theme. -->
     <style name="Theme.PopCornPicks" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorPrimaryVariant">@color/dark_primary_color</item>
-        <item name="colorOnPrimary">@color/light_primary_color</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondary_dark_color</item>
-        <item name="colorSecondaryVariant">@color/secondary_color</item>
-        <item name="colorOnSecondary">@color/secondary_light_color</item>
+        <item name="colorPrimary">@color/color_red</item>
+        <item name="colorSecondary">@color/color_dark_red</item>
+        <item name="colorOnPrimary">@color/color_light_red</item>
+
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorSecondary</item>
         <!-- Customize your theme here. -->
+
+        <item name="android:windowBackground">@color/color_light_red</item>
+
+    </style>
+
+    <style name="CustomShapeApparenceBottomSheetDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="AppBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/shape_bottom_sheet_dialog</item>
     </style>
 </resources>

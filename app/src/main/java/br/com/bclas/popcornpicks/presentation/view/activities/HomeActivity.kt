@@ -10,13 +10,17 @@ import br.com.bclas.popcornpicks.presentation.util.ext.getScope
 import org.koin.core.scope.Scope
 import br.com.bclas.popcornpicks.framework.di.NAMED_MOVIE_hOME
 import br.com.bclas.popcornpicks.presentation.adapter.ListMoviesAdapter
+import br.com.bclas.popcornpicks.presentation.events.OnItemClickListener
 import br.com.bclas.popcornpicks.presentation.model.ListMovieModel
+import br.com.bclas.popcornpicks.presentation.model.MovieModel
 import br.com.bclas.popcornpicks.presentation.state.UiState
 import br.com.bclas.popcornpicks.presentation.util.ext.byViewModel
+import br.com.bclas.popcornpicks.presentation.view.fragments.DetailMovieBottomSheetDialogFragment
 import br.com.bclas.popcornpicks.presentation.viewmodel.PopCornPicksListViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), OnItemClickListener {
 
     private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
@@ -34,13 +38,12 @@ class HomeActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.lifecycleOwner = this
-        binding.viewModel = homeViewModel
         setupStateFlowObserver()
     }
 
     private fun setupStateFlowObserver() {
         lifecycleScope.launch {
-            homeViewModel.uiState.collect {
+            homeViewModel.uiState("now_playing").collect {
                 when (it) {
                     is UiState.Success -> {
                         binding.lblNowPlaying.text = "Agora nos cinemas!"
@@ -58,7 +61,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         lifecycleScope.launch {
-            homeViewModel.uiStatePopular.collect {
+            homeViewModel.uiState("popular").collect {
                 when (it) {
                     is UiState.Success -> {
                         binding.lblPopular.text = "Mais assistidos!"
@@ -74,28 +77,38 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
             }
-
         }
-
     }
 
     private fun fillListMoviesNowPlaying(data: ListMovieModel) {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.listMoviesNowPlaying.layoutManager = layoutManager
-        val adapter = ListMoviesAdapter(data)
-        binding.listMoviesNowPlaying.adapter = adapter
+        data?.let {
+            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            binding.listMoviesNowPlaying.layoutManager = layoutManager
+            val adapter = ListMoviesAdapter(it, this)
+            binding.listMoviesNowPlaying.adapter = adapter
+        }
     }
 
     private fun fillListMoviesPopular(data: ListMovieModel) {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.listMoviesPopular.layoutManager = layoutManager
-        val adapter = ListMoviesAdapter(data)
-        binding.listMoviesPopular.adapter = adapter
+        data?.let {
+            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            binding.listMoviesPopular.layoutManager = layoutManager
+            val adapter = ListMoviesAdapter(it, this)
+            binding.listMoviesPopular.adapter = adapter
+        }
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
         scope.close()
+    }
+
+    override fun onItemClick(item: MovieModel) {
+        val bundle = Bundle()
+        bundle.putParcelable("movie", item)
+        val fragment = DetailMovieBottomSheetDialogFragment.newInstance
+        fragment.arguments = bundle
+        fragment.show(supportFragmentManager, "DetailMovieBottomSheetDialogFragment")
     }
 }
