@@ -18,9 +18,13 @@ import br.com.bclas.popcornpicks.presentation.util.ext.byViewModel
 import br.com.bclas.popcornpicks.presentation.view.fragments.DetailMovieBottomSheetDialogFragment
 import br.com.bclas.popcornpicks.presentation.viewmodel.PopCornPicksListViewModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeActivity : AppCompatActivity(), OnItemClickListener {
+
+    companion object{
+        const val TYPE_NOW_PLAYING = "now_playing"
+        const val TYPE_POPULAR = "popular"
+    }
 
     private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
@@ -38,12 +42,13 @@ class HomeActivity : AppCompatActivity(), OnItemClickListener {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.lifecycleOwner = this
-        setupStateFlowObserver()
+        listMovieNowPlayingStateFlowObserver(TYPE_NOW_PLAYING)
+        listMoviePopularStateFlowObserver(TYPE_POPULAR)
     }
 
-    private fun setupStateFlowObserver() {
+    private fun listMovieNowPlayingStateFlowObserver(type: String) {
         lifecycleScope.launch {
-            homeViewModel.uiState("now_playing").collect {
+            homeViewModel.uiState(type).collect {
                 when (it) {
                     is UiState.Success -> {
                         binding.lblNowPlaying.text = "Agora nos cinemas!"
@@ -60,8 +65,11 @@ class HomeActivity : AppCompatActivity(), OnItemClickListener {
                 }
             }
         }
+    }
+
+    private fun listMoviePopularStateFlowObserver(type: String) {
         lifecycleScope.launch {
-            homeViewModel.uiState("popular").collect {
+            homeViewModel.uiState(type).collect {
                 when (it) {
                     is UiState.Success -> {
                         binding.lblPopular.text = "Mais assistidos!"
@@ -69,7 +77,8 @@ class HomeActivity : AppCompatActivity(), OnItemClickListener {
                     }
 
                     is UiState.Loading -> {
-                        Toast.makeText(this@HomeActivity, "Carregando", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@HomeActivity, "Carregando", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                     is UiState.Error -> {
@@ -79,6 +88,7 @@ class HomeActivity : AppCompatActivity(), OnItemClickListener {
             }
         }
     }
+
 
     private fun fillListMoviesNowPlaying(data: ListMovieModel) {
         data?.let {

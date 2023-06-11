@@ -10,13 +10,13 @@
             android:color="@color/color_red" />
 
         <!-- Border Radius -->
-        <corners android:topLeftRadius="24dp"
-                android:topRightRadius="24dp"/>
+        <corners android:topLeftRadius="30dp"
+                android:topRightRadius="30dp"/>
 
         <!-- Padding -->
         <padding
-            android:bottom="16dp"
-            android:left="16dp"
-            android:right="16dp"
-            android:top="16dp" />
+            android:bottom="0dp"
+            android:left="1dp"
+            android:right="1dp"
+            android:top="1dp" />
 </shape>
