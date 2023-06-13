@@ -24,7 +24,6 @@ class DetailMovieBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentDetailMovieBottomSheetDialogBinding
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
