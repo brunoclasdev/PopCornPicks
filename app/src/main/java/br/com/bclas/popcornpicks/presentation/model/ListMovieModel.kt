@@ -8,14 +8,14 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ListMovieModel(
     var page: Int? = 0,
-    var results: List<MovieModel> = listOf(),
+    var results: ArrayList<MovieModel> = arrayListOf(),
     var totalPage: Int? = 0,
     var totalResults: Int? = 0
 ): Parcelable
 internal fun ListMovieEntity.toModel() : ListMovieModel {
     return ListMovieModel(
         page = this.page,
-        results = this.results.map { it.toModel() },
+        results = this.results.map { it.toModel() } as ArrayList<MovieModel>,
         totalPage = this.totalPage,
         totalResults = this.totalResults
     )
