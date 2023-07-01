@@ -47,9 +47,30 @@ class HomeActivity : AppCompatActivity(), OnItemClickListener {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.lifecycleOwner = this
+        listMovieUpComingStateFlowObserver(TYPE_UPCOMING)
         listMovieTopRatedStateFlowObserver(TYPE_TOP_RATED)
         listMovieNowPlayingStateFlowObserver(TYPE_NOW_PLAYING)
         listMoviePopularStateFlowObserver(TYPE_POPULAR)
+    }
+
+    private fun listMovieUpComingStateFlowObserver(type: String) {
+        lifecycleScope.launch {
+            homeViewModel.uiState(type).collect {
+                when (it) {
+                    is UiState.Success -> {
+//                       fillCarouselView(it.data)
+                    }
+
+                    is UiState.Loading -> {
+                        Toast.makeText(this@HomeActivity, "Carregando", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is UiState.Error -> {
+                        Toast.makeText(this@HomeActivity, "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun listMovieTopRatedStateFlowObserver(type:String){
