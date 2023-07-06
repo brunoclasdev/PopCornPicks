@@ -58,10 +58,12 @@ private val movieModule: Module = module {
     }
 }
 
+// Injeta em tempo de execução os módulos
 fun loadMovieModules() {
     loadKoinModules(movieModule)
 }
 
+// Remove os módulos injetados em tempo de execução para desalocar memoria evitando sobrecarga de memoria ram do dispositivo
 fun unloadMovieModules() {
     unloadKoinModules(movieModule)
 }
